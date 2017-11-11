@@ -5,6 +5,7 @@ Author: Stephen Orsino
 
 */
 
+#include "Journal.h"
 #include <iostream>
 #include <string>
 
@@ -19,6 +20,7 @@ class User
     string userName;
     string firstName;
     string lastName;
+    //Journal journals[100];
     
   public:
   
@@ -43,6 +45,18 @@ class User
     {
       lastName = ln;
     }
+    
+    /*
+    void setJournals(Journal *j[])
+    {
+      int count = j->size();
+      for(int i = 0; i < count; i++)
+      {
+        journals[i] = j[i];
+      }
+      
+    }
+    */
     
     string getUserName()
     {

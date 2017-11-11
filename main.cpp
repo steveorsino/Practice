@@ -88,6 +88,8 @@ int main()
     else if(choice == 'B' || choice == 'b')
     {
       Journal journal1;
+      string jTitle, jBody;
+      int journalcount = 0;
       cout << journal1.getTime() << endl;
       User user2;
       cout << "\nWhat is your user name? ";
@@ -104,6 +106,31 @@ int main()
           user2.setUserName(input);
           user2.setFirstName(fName);
           user2.setLastName(lName);
+          
+          
+          
+          /*
+          Journal *userJournals[journalcount];
+          
+          journalFile.open("journals.txt", ios::in);
+          journalcount = 0;
+          
+          while(journalfile >> jInput)
+          {
+            if(jInput == user2.getUserName())
+            {
+              userJournals[journalcount]->setUserName(jInput);
+              journalFile >> jInput;
+              userJournals[journalcount]->setTitle(jInput);
+              journalFile >> jInput;
+              userJournals[journalcount]->setBody(jInput);
+              user2.setJournals(userJournals);
+              journalcount++;
+            }
+          }
+          journalFile.close();
+          */
+          
         }
        
       }
@@ -117,8 +144,48 @@ int main()
         cout << "No user found.\n";
         dataFile.close();
       }
-      
       dataFile.close();
+      
+      fstream journalFile;
+      journalFile.open("journals.txt", ios::in);
+      journalcount = 0;
+      string jInput;
+      
+      if(!journalFile)
+      {
+        cout << "\nERROR\n";
+      }
+      
+      while(journalFile >> jInput)
+      {
+        if(jInput == user2.getUserName())
+        {
+          journalcount++;
+        }
+      }
+      journalFile.close();
+      
+      cout << "\nYou have " << journalcount << " journal entries.\n";
+      cin.ignore();
+      cout << "Enter a ttile for your new Journal entry: ";
+      getline(cin, jTitle);
+      cout << "Enter the body of your new Journal entry: ";
+      getline(cin, jBody);
+      
+      cout << "Title: " << jTitle << endl;
+      cout << "Body: " << jBody << endl;
+      
+      journal1.setUserName(user2.getUserName());
+      journal1.setTitle(jTitle);
+      journal1.setBody(jBody);
+      
+      journalFile.open("journals.txt", ios::app);
+      journalFile << journal1.getUser() << endl;
+      journalFile << journal1.getTitle() << endl;
+      journalFile << journal1.getBody() << endl;
+      journalFile << journal1.getTime() << endl;
+      journalFile.close();
+      
     }
     
     else if(choice == 'C' || choice == 'c')

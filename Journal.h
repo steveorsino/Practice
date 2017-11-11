@@ -23,6 +23,20 @@ class Journal
       timeEntered = time(0);
     }
     
+    void setUserName(string u)
+    {
+      userName = u;
+    }
+    
+    void setTitle(string t) 
+    {
+      title = t;
+    }
+    
+    void setBody(string b)
+    {
+      body = b;
+    }
     
     long getTime() {
       return timeEntered;
@@ -31,6 +45,16 @@ class Journal
     string getUser()
     {
       return userName;
+    }
+    
+    string getTitle()
+    {
+      return title;
+    }
+    
+    string getBody()
+    {
+      return body;
     }
     
 };
