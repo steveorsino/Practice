@@ -16,15 +16,22 @@ using namespace std;
 class User
 {
   private:
+    string userName;
     string firstName;
     string lastName;
     
   public:
   
-    User(string fn = "John", string ln = "Doe") 
+    User(string un = "default", string fn = "John", string ln = "Doe") 
     {
+      userName = un;
       firstName = fn; 
       lastName = ln;
+    }
+    
+    void setUserName(string un)
+    {
+      userName = un;
     }
   
     void setFirstName(string fn)
@@ -35,6 +42,11 @@ class User
     void setLastName(string ln)
     {
       lastName = ln;
+    }
+    
+    string getUserName()
+    {
+      return userName;
     }
   
     string getFirstName()

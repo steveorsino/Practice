@@ -13,16 +13,18 @@ using namespace std;
 int main()
 {
   //User user1;
-  string fName, lName;
+  string uName, fName, lName;
+  string input;
   fstream dataFile;
   char choice;
+  
   
   
   do {
     
     cout << "Hello, What would you like to do today?\n"
         << "\tA. Create a user\n"
-        << "\tB. SIgn it with Another User\n"
+        << "\tB. Sign it with username\n"
         << "\tC. Exit\n"
         << "Enter choice: ";
         
@@ -30,41 +32,74 @@ int main()
     
     if (choice == 'A' || choice == 'a')
     {
-      cout << "enter firstname";
-      cin >> fName;;
-      cout << "enter lastname";
-      cin >> lName;
+      bool isOpen = false;
+      dataFile.open("users.txt", ios::in);
       
+      if(dataFile)
+      {
       
-      User user1(fName, lName);
-      
-      cout << user1.getFirstName() << " " << user1.getLastName() << endl;
-      
+        do {
+          cout << "Create a user name: ";
+          cin >> uName;
+            
+          while(dataFile >> input)
+          {
 
-      dataFile.open("users.txt", ios::app);
+            if (input == uName)
+            {
+              cout << "\nThis user name already exists.\n\n";
+            }
+            else {
+              isOpen = true;
+              dataFile.close();
+            }
+          }
+          
+        }while (!isOpen);
       
-      dataFile << user1.getFirstName() << endl;
-      dataFile << user1.getLastName() << endl;
       
-      dataFile.close();
-
+        cout << "Enter first name: ";
+        cin >> fName;;
+        cout << "Enter last name: ";
+        cin >> lName;
+        
+        
+        User user1(uName, fName, lName);
+        
+        cout << user1.getFirstName() << " " << user1.getLastName() << endl;
+        
+  
+        dataFile.open("users.txt", ios::app);
+        
+        dataFile << user1.getUserName() << endl;
+        dataFile << user1.getFirstName() << endl;
+        dataFile << user1.getLastName() << endl;
+        
+        dataFile.close();
+      }
+      
+      else
+      {
+        cout << "\nerror opening file" << endl;
+      }
     }
     
     else if(choice == 'B' || choice == 'b')
     {
       User user2;
-      cout << "\nWhat is your first name? ";
-      cin >> fName;
+      cout << "\nWhat is your user name? ";
+      cin >> uName;
       
       dataFile.open("users.txt", ios::in);
-      string input;
+
       while(dataFile >> input)
       {
-        if (input == fName)
+        if (input == uName)
         {
-          //dataFile >> fName;
+          dataFile >> fName;
           dataFile >> lName;
-          user2.setFirstName(input);
+          user2.setUserName(input);
+          user2.setFirstName(fName);
           user2.setLastName(lName);
         }
        
