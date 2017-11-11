@@ -3,6 +3,7 @@
 */
 
 #include "User.h"
+#include "Journal.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -86,6 +87,8 @@ int main()
     
     else if(choice == 'B' || choice == 'b')
     {
+      Journal journal1;
+      cout << journal1.getTime() << endl;
       User user2;
       cout << "\nWhat is your user name? ";
       cin >> uName;
