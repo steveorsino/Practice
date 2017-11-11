@@ -67,16 +67,17 @@ int main()
           user2.setFirstName(input);
           user2.setLastName(lName);
         }
-        else
-        {
-          cout << "No user found.\n";
-          dataFile.close();
-        }
+       
       }
       
       if(user2.getLastName() != "Doe")
       {
         cout << "Welcome back " << user2.getFirstName() << " " << user2.getLastName() << endl;
+      }
+      else
+      {
+        cout << "No user found.\n";
+        dataFile.close();
       }
       
       dataFile.close();
