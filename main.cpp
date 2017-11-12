@@ -1,5 +1,5 @@
 /*
-  Pratice program
+  Pratice program to refresh
 */
 
 #include "User.h"
@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 
 
 using namespace std;
@@ -23,9 +24,9 @@ int main()
   
   do {
     
-    cout << "Hello, What would you like to do today?\n"
+    cout << "Main Menu\n"
         << "\tA. Create a user\n"
-        << "\tB. Sign it with username\n"
+        << "\tB. Sign in with username\n"
         << "\tC. Exit\n"
         << "Enter choice: ";
         
@@ -212,6 +213,116 @@ int main()
                 }
               }
               journalFile.close();
+              
+              char choice3;
+              
+              do {
+                
+                cout << "Journal menu: \n"
+                    << "\tA. Update entry\n"
+                    << "\tB. Delete entry\n"
+                    << "\tC. Exit\n"
+                    << "Enter your choice: ";
+                cin >> choice3;
+                
+                if (choice3 == 'A' || choice3 == 'a')
+                {
+                  cout << "\nUpdate function comming soon!\n";
+                }
+                else if (choice3 == 'B' || choice3 == 'b')
+                {
+                  vector<string> entries;
+                  vector<string> remainingEntries;
+                  journalFile.open("journals.txt", ios::in);
+                  
+                  journalcount = 0;
+                  while (getline(journalFile, jInput))
+                  {
+                    entries.push_back(jInput);
+                    //cout << entries[journalcount] << endl;
+                    journalcount++;
+                  }
+                  
+                  journalFile.close();
+                  
+                  for(int i = 0; i < entries.size(); i += 4)
+                  {
+                    if (entries[i] == user2.getUserName())
+                    {
+                      cout << "Username: " << entries[i] << endl;
+                      cout << "Title: " << entries[i + 1] << endl;
+                      cout << "Body: " << entries[i + 2] << endl;
+                      cout << "When entered: " << entries[i + 3] << endl << endl;
+                    }
+                  }
+                  
+                  cin.ignore();
+                  string delTitle;
+                  cout << "\nEnter the title of the entry you wish to delete: ";
+                  getline(cin, delTitle);
+                  //cout << entries.size() << endl;
+                  cout << "deleting: " <<delTitle << endl;
+                  
+                  for(int i = 1; i < entries.size(); i+=4)
+                  {
+                    
+                    //cout << "IN FOR LOOP " << i <<"\n";
+                    if (entries[i] != delTitle )
+                      {
+                        /*
+                        cout << "IN IF STATEMENT\n";
+                        cout << entries[i - 1] << endl;
+                        cout << entries[i] << endl;
+                        cout << entries[i + 1] << endl;
+                        cout << entries[i + 2] << endl;
+                        */
+                        remainingEntries.push_back(entries[i - 1]);
+                        remainingEntries.push_back(entries[i]);
+                        remainingEntries.push_back(entries[i + 1]);
+                        remainingEntries.push_back(entries[i + 2]);
+                      }
+                    //cout << "\nAFTER IF\n\n";
+                  }
+                  
+                  /*
+                  need to install c++ 11 into workspace
+                  for (string val : remainingEntries)
+                    {
+                      cout << val << endl;
+                    }
+                  */
+                  
+                  for(int i = 0; i < remainingEntries.size(); i += 4)
+                  {
+                    if (remainingEntries[i] == user2.getUserName())
+                    {
+                      cout << "Username: " << remainingEntries[i] << endl;
+                      cout << "Title: " << remainingEntries[i + 1] << endl;
+                      cout << "Body: " << remainingEntries[i + 2] << endl;
+                      cout << "When entered: " << remainingEntries[i + 3] << endl << endl;
+                    }
+                  }
+                  
+                  journalFile.open("journals.txt", ios::out);
+                  
+                  for (int i = 0; i < remainingEntries.size(); i++)
+                  {
+                    journalFile << remainingEntries[i] << endl;
+                  }
+                  
+                  journalFile.close();
+                  
+                  
+                }
+                else if (choice3 == 'C' || choice3 == 'c')
+                {
+                  cout << "\nBack to user menu\n";
+                }
+                else {
+                  cout << "\nInvalid entry.\n";
+                }
+                
+              } while (choice3 != 'C' && choice3 != 'c');
           }
           
           else if (choice2 == 'C' || choice2 == 'c')
@@ -235,10 +346,6 @@ int main()
         dataFile.close();
       }
       dataFile.close();
-      
-      
-      
-      
       
     }
     
