@@ -5,7 +5,6 @@ Author: Stephen Orsino
 
 */
 
-#include "Journal.h"
 #include <iostream>
 #include <string>
 

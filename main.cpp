@@ -4,11 +4,12 @@
 
 #include "User.h"
 #include "Journal.h"
+#include "ToDo.h"
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <vector>
-
+#include <time.h>
 
 using namespace std;
 
@@ -89,8 +90,10 @@ int main()
     else if(choice == 'B' || choice == 'b')
     {
       Journal journal1;
+      ToDo todo1;
       string jTitle, jBody;
       int journalcount = 0;
+      int todoCount = 0;
       cout << journal1.getTime() << endl;
       User user2;
       cout << "\nWhat is your user name? ";
@@ -161,13 +164,43 @@ int main()
         
         cout << "\nYou have " << journalcount << " journal entries.\n";
         
+        fstream todoFile;
+        todoFile.open("todos.txt", ios::in);
+        todoCount = 0;
+        string tInput;
+        
+        if(!todoFile)
+        {
+          todoFile.close();
+          todoFile.open("todos.txt", ios::out);
+          todoFile << todo1.getUser() << endl;
+          todoFile << todo1.getToDo() << endl;
+          todoFile << todo1.getTimeEntered() << endl;
+          todoFile << todo1.getToDo() << endl;
+          todoFile.close();
+          todoFile.open("todos.txt", ios::in);
+        }
+        
+        while(todoFile >> tInput)
+        {
+          if(tInput == user2.getUserName())
+          {
+            todoCount++;
+          }
+        }
+        todoFile.close();
+        
+        cout << "\nYou have " << todoCount << " to dos.\n";
+        
         char choice2;
         do {
   
           cout << "What would you like to do today, " << user2.getFirstName() << "?\n";
-          cout << "\tA. create a new journal entry\n"
+          cout << "\tA. Create a new journal entry\n"
                 << "\tB. Display your entries\n"
-                << "\tC. Exit\n"
+                << "\tC. Create a new to do\n"
+                << "\tD. Display your to dos\n"
+                << "\tE. Exit\n"
                 << "Enter your choice: ";
           cin >> choice2;
           
@@ -327,17 +360,70 @@ int main()
           
           else if (choice2 == 'C' || choice2 == 'c')
           {
-            cout << "Back to main menu.\n";
+            string tBody;
+            int day,month, year, hour, min;
+            time_t tDue;
+            struct tm * userTime;
+            
+            cin.ignore();
+            cout << "\nEnter what you need to do: ";
+            getline(cin, tBody);
+            
+            cout << "Enter the date:\n"
+                  << "\tMonth(numneric): ";
+            cin >> month;
+            cout << "\tDay(numberic): ";
+            cin >> day;
+            cout << "\tYear: ";
+            cin >> year;
+            cout << "\tHour: ";
+            cin >> hour;
+            cout << "\tMinute: ";
+            cin >> min;
+            
+    
+            time(&tDue);
+            userTime = localtime(&tDue);
+            
+            userTime->tm_year = year - 1900;
+            userTime->tm_mon = month - 1;
+            userTime->tm_mday = day;
+            userTime->tm_hour = hour;
+            userTime->tm_min = min;
+            userTime->tm_sec = 1;
+            
+            mktime(userTime);
+            
+            ToDo todonew(user2.getUserName(), tBody, mktime(userTime));
+            
+            cout << "Saving: \n";
+            
+            cout << "\tUser: " << todonew.getUser() << endl;
+            cout << "\tTo do: " << todonew.getToDo() << endl;
+            cout << "\tDue: " << asctime(userTime) << endl;
+            
+            todoFile.open("todos.txt", ios::app);
+            todoFile << todonew.getUser() << endl;
+            todoFile << todonew.getToDo() << endl;
+            todoFile << todonew.getTimeEntered() << endl;
+            todoFile << todonew.getTimeDue() << endl;
+            todoFile.close();
+            
+          }
+          else if (choice2 == 'D' || choice2 == 'd')
+          {
           }
           
+          else if (choice2 == 'E' || choice2 == 'e')
+          {
+            cout << "Back to main menu.\n";
+          }
           else
           {
             cout << "Invalid choice.\n\n";
           }
           
-        } while (choice2 != 'C' && choice2 != 'c');  
-        
-        
+        } while (choice2 != 'E' && choice2 != 'e');  
         
       }
       else
@@ -355,9 +441,9 @@ int main()
     }
     
     else
-  {
-    cout << "\n\nYou entered an invalid choice.\n\n";
-  }
+    {
+      cout << "\n\nYou entered an invalid choice.\n\n";
+    }
     
   }while (choice != 'C' && choice != 'c');
   
